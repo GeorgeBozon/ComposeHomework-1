@@ -3,6 +3,12 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.composeCompiler)
+}
+
+composeCompiler {
+    reportsDestination.set(layout.buildDirectory.dir("compose_compiler/reports"))
+    metricsDestination.set(layout.buildDirectory.dir("compose_compiler/metrics"))
 }
 
 android {
@@ -33,16 +39,38 @@ android {
         jvmTarget = '17'
     }
     buildFeatures {
+        compose true
         viewBinding true
     }
 }
 
 dependencies {
+
     implementation project(":common:di")
     implementation project(":common:formatters")
     implementation project(":common:ui")
     implementation project(":common:data:products")
     implementation project(":common:data:promo")
+
+
+    implementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.compose.activity)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.lifecicle.viewmodel)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.coil)
+    implementation(libs.compose.coil.http)
+
+    implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    implementation(libs.androidx.material3.adaptive.navigation3)
+
+    implementation(libs.kotlinx.serialization.core)
 
     implementation libs.core.ktx
     implementation libs.appcompat

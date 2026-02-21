@@ -13,8 +13,9 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import ru.otus.marketsample.promo.domain.ConsumePromosUseCase
 import ru.otus.marketsample.R
+import javax.inject.Inject
 
-class PromoListViewModel(
+class PromoListViewModel @Inject constructor(
     private val promoStateFactory: PromoStateFactory,
     private val consumePromosUseCase: ConsumePromosUseCase,
 ) : ViewModel() {
@@ -22,7 +23,7 @@ class PromoListViewModel(
     private val _state = MutableStateFlow(PromoScreenState())
     val state: StateFlow<PromoScreenState> = _state.asStateFlow()
 
-    init {
+    fun initViewModel() {
         requestPromos()
     }
 
@@ -45,6 +46,7 @@ class PromoListViewModel(
             .catch {
                 _state.update { screenState ->
                     screenState.copy(
+                        isLoading = false,
                         hasError = true,
                         errorProvider = { context -> context.getString(R.string.error_wile_loading_data) }
                     )

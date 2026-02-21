@@ -1,29 +1,28 @@
 package ru.otus.marketsample.di
 
 import android.content.Context
+import androidx.lifecycle.ViewModelProvider
 import dagger.BindsInstance
 import dagger.Component
-import ru.otus.marketsample.details.feature.di.DetailsComponentDependencies
-import ru.otus.marketsample.products.feature.di.ProductListComponentDependencies
-import ru.otus.marketsample.promo.feature.di.PromoComponentDependencies
-import ru.otus.common.di.Dependencies
+import ru.otus.marketsample.MainActivity
 import javax.inject.Singleton
 
-@Singleton
 @Component(
     modules = [
         NetworkModule::class,
         DataModule::class,
+        ViewModelsModule::class
     ]
 )
-interface AppComponent:
-    Dependencies,
-    DetailsComponentDependencies,
-    PromoComponentDependencies,
-    ProductListComponentDependencies
+@Singleton
+interface AppComponent
 {
+    fun provideViewModelFactory(): ViewModelProvider.Factory
+
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance applicationContext: Context): AppComponent
     }
+
+    fun inject(mainActivity: MainActivity)
 }

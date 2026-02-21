@@ -3,13 +3,14 @@ package ru.otus.marketsample
 import android.app.Application
 import ru.otus.marketsample.di.AppComponent
 import ru.otus.marketsample.di.DaggerAppComponent
-import ru.otus.common.di.Dependencies
-import ru.otus.common.di.DependenciesProvider
 
-class MarketSampleApp: Application(), DependenciesProvider {
-    val appComponent: AppComponent = DaggerAppComponent.factory().create(this)
+class MarketSampleApp: Application() {
+    lateinit var appComponent: AppComponent
 
-    override fun getDependencies(): Dependencies {
-        return appComponent
+    override fun onCreate() {
+        super.onCreate()
+        appComponent = DaggerAppComponent.factory().create(this)
     }
 }
+
+fun Application.getAppComponent() = (this as? MarketSampleApp)?.appComponent
